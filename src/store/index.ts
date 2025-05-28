@@ -1,16 +1,16 @@
 import { createStore } from 'vuex';
+import productsModule from './modules/products';
+import type { ProductsState } from './modules/products';
 
 export interface RootState {
-  version: string;
+  products: ProductsState;
 }
 
 export default createStore<RootState>({
-  state: {
-    version: '1.0.0'
-  },
+  state: {} as RootState,
   mutations: {},
   actions: {},
   modules: {
-    // TODO añadir módulos
+    products: productsModule,
   },
 });
