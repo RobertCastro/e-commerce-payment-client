@@ -24,6 +24,8 @@
 import { defineComponent } from 'vue';
 import type { PropType } from 'vue';
 import type { Product } from '@/store/modules/products';
+import { useStore } from 'vuex';
+import type { RootState } from '@/store';
 
 export default defineComponent({
   name: 'ProductCard',
@@ -34,9 +36,12 @@ export default defineComponent({
     },
   },
   setup(props) {
+    const store = useStore<RootState>();
+
     const addToCart = () => {
-      // TODO: Implementar lógica para añadir al carrito
-      console.log('Añadir al carrito:', props.product.id);
+      store.dispatch('cart/addToCart', props.product.id);
+      console.log('Añadido al carrito:', props.product.name);
+      // TODO: Mostrar una notificación
     };
 
     return {

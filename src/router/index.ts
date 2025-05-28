@@ -3,6 +3,7 @@ import type { RouteRecordRaw } from 'vue-router';
 import ProductListView from '../views/ProductListView.vue';
 import CheckoutView from '../views/CheckoutView.vue';
 import TransactionResultView from '../views/TransactionResultView.vue';
+import ShoppingCartView from '../views/ShoppingCartView.vue';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -11,10 +12,14 @@ const routes: Array<RouteRecordRaw> = [
     component: ProductListView,
   },
   {
+    path: '/cart',
+    name: 'ShoppingCart',
+    component: ShoppingCartView,
+  },
+  {
     path: '/checkout',
     name: 'Checkout',
     component: CheckoutView,
-    // TODO añadir guards: no ir a checkout si el carrito está vacío
   },
   {
     path: '/result/:transactionId',
