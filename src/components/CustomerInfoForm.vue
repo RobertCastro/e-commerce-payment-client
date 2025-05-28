@@ -4,7 +4,7 @@
     <form @submit.prevent>
       <div class="mb-4">
         <label for="name" class="block text-sm font-medium text-gray-700">Nombre completo</label>
-        <input type="text" id="name" v-model="customer.name" @input="update" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+        <input type="text" id="name" v-model="customer.fullName" @input="update" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
       </div>
       <div class="mb-4">
         <label for="email" class="block text-sm font-medium text-gray-700">Correo electrónico</label>
@@ -12,7 +12,7 @@
       </div>
       <div class="mb-4">
         <label for="phone" class="block text-sm font-medium text-gray-700">Teléfono (Opcional)</label>
-        <input type="tel" id="phone" v-model="customer.phone" @input="update" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+        <input type="tel" id="phone" v-model="customer.phoneNumber" @input="update" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
       </div>
     </form>
   </div>

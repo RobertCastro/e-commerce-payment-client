@@ -22,10 +22,8 @@
             <p>Total: <span class="font-bold">${{ cartTotal.toLocaleString() }}</span></p>
         </div>
         <button
-            @click="initiateCheckout"
-            :disabled="!canProceed"
-            class="w-full bg-green-600 text-white py-3 px-6 rounded-lg text-lg font-semibold shadow hover:bg-green-700 transition disabled:opacity-50 disabled:cursor-not-allowed">
-            {{ transactionId ? 'Ir a Procesar Pago' : 'Iniciar transacción' }}
+            @click="handleInitiateClick" :disabled="!canProceed || isLoading" class="w-full bg-green-600 text-white py-3 px-6 rounded-lg text-lg font-semibold shadow hover:bg-green-700 transition disabled:opacity-50 disabled:cursor-not-allowed">
+            {{ isLoading ? 'Iniciando...' : (transactionId ? 'Ir a Procesar Pago' : 'Iniciar Transacción') }}
         </button>
          <p v-if="!canProceed && itemCount > 0" class="text-xs text-red-500 mt-2">
             Por favor, completa los campos requeridos en los formularios.
@@ -56,27 +54,38 @@ export default defineComponent({
     const store = useStore<RootState>();
     const router = useRouter();
     const checkoutError = ref<string | null>(null);
+    const isLoading = ref<boolean>(false);
 
     const itemCount = computed(() => store.getters['cart/itemCount']);
     const cartTotal = computed(() => store.getters['cart/cartTotal']);
     const canProceed = computed(() => store.getters['checkout/isCheckoutDataComplete']);
     const transactionId = computed(() => store.state.checkout.transactionId);
 
-    const initiateCheckout = async () => {
+    const handleInitiateClick = async () => {
       checkoutError.value = null;
+      isLoading.value = true;
+
       if (transactionId.value) {
-          // TODO: Redirigir o mostrar paso de pago
           console.log("Ya hay ID, ir a pagar:", transactionId.value);
           alert("Siguiente paso: Procesar pago (Aún no implementado)");
-      } else if (canProceed.value) {
+          isLoading.value = false;
+          return;
+      }
+
+      if (canProceed.value) {
         try {
-          // TODO: Llamar a la acción POST /checkout/initiate
-          console.log("Llamando a 'initiateCheckout'...");
-          alert("Llamando a Iniciar Transacción (Aún no implementado)");
-        } catch (error) {
-          checkoutError.value = "Hubo un error al iniciar la transacción. Intenta de nuevo.";
+          const newTransactionId = await store.dispatch('checkout/initiateBackendCheckout');
+          console.log("Transacción iniciada con ID:", newTransactionId);
+          alert(`Transacción iniciada con ID: ${newTransactionId}. Siguiente paso: Procesar pago.`);
+
+        } catch (error: any) {
+          checkoutError.value = error.message || "Hubo un error al iniciar la transacción.";
           console.error("Error initiating checkout:", error);
+        } finally {
+           isLoading.value = false;
         }
+      } else {
+          isLoading.value = false;
       }
     };
 
@@ -84,9 +93,10 @@ export default defineComponent({
       itemCount,
       cartTotal,
       canProceed,
-      initiateCheckout,
+      handleInitiateClick,
       transactionId,
       checkoutError,
+      isLoading,
     };
   },
 });

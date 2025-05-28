@@ -14,11 +14,7 @@
         <label for="country" class="block text-sm font-medium text-gray-700">País</label>
         <input type="text" id="country" v-model="delivery.country" @input="update" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
       </div>
-      <div class="mb-4">
-        <label for="postalCode" class="block text-sm font-medium text-gray-700">Código postal</label>
-        <input type="text" id="postalCode" v-model="delivery.postalCode" @input="update" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
-      </div>
-    </form>
+      </form>
   </div>
 </template>
 
